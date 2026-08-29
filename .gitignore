@@ -1,0 +1,25 @@
+# Virtual environment
+.venv/
+venv/
+
+# Environment / secrets
+.env
+.env.*
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.py[cod]
+
+# IDE
+.vscode/
+.idea/
+
+# Local vector database
+data/qdrant/
+
+# Uploaded user documents
+data/uploads/
+
+# Evaluation / temporary files
+*.log
