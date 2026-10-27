@@ -1,498 +1,167 @@
-# 🧠 RAGForge
-## 🚀 Live Demo
+# RAGForge
 
-👉 [Launch RAGForge](https://ragforge1.streamlit.app/)
+**A document Q&A and retrieval evaluation workbench with reproducible performance evidence.**
 
-### Adaptive Hybrid Retrieval-Augmented Generation
+Upload documents, inspect retrieved evidence and citations, and compare retrieval strategies using a
+public labeled benchmark. The default demo runs locally without an API key. Neural retrieval and
+OpenAI generation are optional.
 
-RAGForge is a modular Retrieval-Augmented Generation (RAG) application that allows users to upload documents and ask questions about their content.
+## Run the working demo
 
-The system combines semantic query routing, dense vector retrieval, BM25 keyword retrieval, Reciprocal Rank Fusion (RRF), CrossEncoder reranking, and LLM-based generation to produce grounded answers with source references.
-
----
-
-## 🚀 Features
-
-- 📄 Upload PDF, DOCX, TXT, and Markdown documents
-- 🧭 Semantic query routing
-- 🔎 Dense semantic retrieval
-- 🔤 BM25 keyword retrieval
-- 🔀 Hybrid retrieval using Reciprocal Rank Fusion (RRF)
-- 🏆 CrossEncoder reranking
-- 🤖 LLM-powered answer generation
-- 💬 Conversation-aware follow-up questions
-- 📚 Source/chunk display for retrieved context
-- 🖥️ Streamlit web interface
-- 🔑 Environment-based API key management
-- 🧩 Modular retrieval and generation architecture
-
----
-
-## 🏗️ Architecture
-
-```text
-                         ┌──────────────────┐
-                         │    User Query    │
-                         └────────┬─────────┘
-                                  │
-                                  ▼
-                         ┌──────────────────┐
-                         │ Semantic Router  │
-                         └────────┬─────────┘
-                                  │
-                    ┌─────────────┼─────────────┐
-                    │             │             │
-                    ▼             ▼             ▼
-                Greeting       Casual       Document
-                    │             │             │
-                    ▼             ▼             ▼
-              Direct Reply       LLM      Hybrid Retrieval
-                                                │
-                                  ┌─────────────┴─────────────┐
-                                  │                           │
-                                  ▼                           ▼
-                          Dense Retrieval                 BM25
-                                  │                           │
-                                  └─────────────┬─────────────┘
-                                                │
-                                                ▼
-                                      Reciprocal Rank Fusion
-                                                │
-                                                ▼
-                                         CrossEncoder
-                                          Reranking
-                                                │
-                                                ▼
-                                         Top Documents
-                                                │
-                                                ▼
-                                          LLM Generator
-                                                │
-                                                ▼
-                                      Grounded Answer
-                                                │
-                                                ▼
-                                             Sources
-```
-
----
-
-## 🔍 How It Works
-
-### 1. Document Ingestion
-
-Users upload documents through the Streamlit interface.
-
-Supported formats:
-
-- PDF
-- DOCX
-- TXT
-- Markdown
-
-The documents are loaded and divided into smaller chunks before being indexed.
-
-### 2. Semantic Query Routing
-
-The incoming query is first classified into one of three categories:
-
-- `greeting`
-- `casual`
-- `document`
-
-Document-related queries continue through the retrieval pipeline, while greetings and casual conversations can bypass retrieval.
-
-The router also receives conversation history so contextual follow-up queries can be interpreted correctly.
-
-For example:
-
-```text
-User: Tell me an interesting fact from this paper.
-
-Assistant: The paper discusses...
-
-User: Another one.
-```
-
-The second query can be interpreted using the previous conversation instead of being treated as an unrelated query.
-
-### 3. Dense Retrieval
-
-Documents are converted into vector embeddings.
-
-The query is also converted into an embedding, and semantically similar document chunks are retrieved from the vector store.
-
-### 4. BM25 Retrieval
-
-BM25 provides lexical/keyword-based retrieval.
-
-This is useful when exact terminology, names, technical terms, or keywords are important.
-
-### 5. Hybrid Retrieval
-
-Dense retrieval and BM25 retrieval are combined using Reciprocal Rank Fusion (RRF).
-
-This allows RAGForge to benefit from both:
-
-- Semantic similarity
-- Keyword matching
-
-### 6. Reranking
-
-The retrieved candidates are passed through a CrossEncoder reranker.
-
-The reranker evaluates the relationship between the query and each candidate document and produces a ranking.
-
-The highest-ranked documents are then passed to the generator.
-
-> Note: CrossEncoder scores are model-specific relevance scores and are not probabilities. Negative values can be valid.
-
-### 7. Generation
-
-The final retrieved documents are provided as context to the LLM.
-
-The generator is instructed to:
-
-- Answer using the retrieved context
-- Avoid inventing unsupported information
-- Use conversation history when resolving follow-up questions
-- Indicate when the available context is insufficient
-- Identify the sources used
-
----
-
-## 🛠️ Tech Stack
-
-### Programming
-
-- Python
-
-### Interface
-
-- Streamlit
-
-### LLM
-
-- OpenAI API
-
-### Retrieval
-
-- Qdrant
-- Sentence Transformers
-- BM25
-- Reciprocal Rank Fusion
-
-### Reranking
-
-- CrossEncoder
-- `cross-encoder/ms-marco-MiniLM-L-6-v2`
-
-### Frameworks / Libraries
-
-- LangChain
-- Hugging Face
-- PyTorch
-- NumPy
-- Pandas
-
----
-
-## 📁 Project Structure
-
-```text
-RAGForge/
-│
-├── app/
-│   └── streamlit_app.py
-│
-├── src/
-│   │
-│   ├── evaluation/
-│   │
-│   ├── generation/
-│   │   ├── generator.py
-│   │   └── test_generator.py
-│   │
-│   ├── ingestion/
-│   │   ├── __init__.py
-│   │   ├── chunker.py
-│   │   └── loaders.py
-│   │
-│   ├── retrieval/
-│   │   ├── basic_rag.py
-│   │   ├── hybrid.py
-│   │   ├── reranker.py
-│   │   ├── router.py
-│   │   └── test_reranker.py
-│   │
-│   └── pipeline.py
-│
-├── data/
-│   └── uploads/
-│
-├── .gitignore
-├── requirements.txt
-└── README.md
-```
-
----
-
-## ⚙️ Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/randomaban-beep/RAGForge.git
-```
-
-Move into the project directory:
-
-```bash
-cd RAGForge
-```
-
-Create a virtual environment:
+Python 3.11 or 3.12, from the repository root:
 
 ```bash
 python -m venv .venv
-```
-
-Activate the virtual environment on Windows:
-
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-Install the required dependencies:
-
-```bash
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
-```
-
----
-
-## 🔑 Environment Variables
-
-Create a `.env` file in the project root.
-
-```env
-OPENAI_API_KEY=your_openai_api_key
-```
-
-Never commit your `.env` file or API keys to GitHub.
-
----
-
-## ▶️ Run Locally
-
-Start the Streamlit application:
-
-```bash
 streamlit run app/streamlit_app.py
 ```
 
-Streamlit will provide a local URL, usually:
+On Windows, you can also double-click **run-demo.cmd** after extracting/cloning the project; it creates a local environment and installs the runtime dependencies.
 
-```text
-http://localhost:8501
+Choose **Load sample handbook**, then ask **How often are API keys rotated?**
+Inspect the cited source and query trace. The Evaluation reports tab displays committed benchmark
+results, latency, failure cases, and downloadable JSON. Upload PDF, DOCX, TXT, or Markdown to replace
+the sample. Each browser session owns its own in-memory knowledge base.
+
+The default **extractive** mode returns a matching evidence sentence. It is a runnable search/excerpt
+demo, not an LLM or a claim of semantic answer accuracy. Ask self-contained questions; conversation
+history is displayed but not used to rewrite follow-ups.
+
+## Retrieval and generation options
+
+| Mode | Purpose | Additional requirements |
+|---|---|---|
+| TF-IDF | Fast lexical baseline | None |
+| BM25 | Default keyword retrieval with positive IDF for small corpora | None |
+| Dense | MiniLM semantic embeddings and exact cosine search | requirements-neural.txt; model download |
+| Hybrid | BM25 + dense reciprocal rank fusion | Neural dependencies |
+| Hybrid + reranking | CrossEncoder rescores the top 20 fused candidates | Neural dependencies |
+| OpenAI answers | Structured answers, source IDs, abstention, token usage | OPENAI_API_KEY; paid provider calls |
+
+```bash
+pip install -r requirements-neural.txt
 ```
 
-Open the URL in your browser.
+For OpenAI answers, copy .env.example to .env and set your own key locally. The default model is
+gpt-5-mini, configurable with OPENAI_MODEL. Select openai and rebuild the sample/upload index.
+Questions and retrieved evidence are sent to the provider. Citation IDs are validated against the
+actual retrieved set; this does not guarantee that every claim is supported.
 
----
-
-## 💬 Example Usage
-
-Upload a document and ask:
-
-```text
-What is this document about?
-```
-
-Then ask a follow-up:
+## Architecture
 
 ```text
-Tell me an interesting fact.
+PDF / DOCX / TXT / MD
+  -> in-memory parser -> stable source IDs -> overlapping word chunks
+  -> per-session index
+  -> TF-IDF | BM25 | dense | hybrid RRF -> optional CrossEncoder
+  -> evidence excerpts | structured LLM answer
+  -> citations + stage timings + token usage
+
+Public corpus + relevance judgments
+  -> same retrieval implementation
+  -> per-query Recall / MRR / nDCG + p50 / p95 + confidence intervals
+  -> versioned report + CI regression gate
 ```
 
-Then:
+The local exact vector index is intentionally easy to inspect and benchmark on a small corpus.
+It replaces an in-memory Qdrant wrapper; persistence, distributed search, and tenant authorization
+remain deployment work.
+
+## Evaluate and test
+
+```bash
+pip install -r requirements-dev.txt
+pytest -q
+ruff check .
+python -m src.evaluation.run --min-recall 0.8 --out reports/demo
+python -m src.evaluation.answers
+python -m src.evaluation.run --dataset scifact --download --repeats 3 --out reports/scifact-lexical
+python -m src.evaluation.run --dataset scifact --download --neural --out reports/scifact
+```
+
+The public run uses all 300 BEIR/SciFact test queries and all 5,183 documents. It evaluates document
+retrieval, not scientific claim truth or generated-answer correctness. The 20-case synthetic answer
+fixture is separate and explicitly labeled as development data.
+
+Optional paid answer evaluation:
+
+```bash
+python -m src.evaluation.answers --generation openai --judge --out reports/llm/answers.json
+```
+
+The judge separately scores correctness, groundedness, and citation support and records rationales.
+Human calibration is still needed. No paid generation/judge results are claimed in this repository's
+offline benchmark.
+
+CI runs offline tests, an absolute recall smoke gate, and a comparison against the committed fixture
+report. Dataset hashes and query identities must match; a recall or nDCG drop over 0.02 fails.
+Reports include source fingerprints, dependencies, rankings, and run conditions.
+
+## Results and portfolio evidence
+
+Measured on all **300 BEIR/SciFact test queries** and **5,183 documents**, on CPU.
+These are retrieval-only results, not generated-answer accuracy.
+
+| Mode | Recall@5 | MRR@5 | nDCG@5 | p50 ms | p95 ms |
+|---|---:|---:|---:|---:|---:|
+| tfidf | 0.6499 | 0.5363 | 0.5569 | 4.34 | 5.69 |
+| bm25 | 0.7209 | 0.6257 | 0.6427 | 29.18 | 58.73 |
+| dense | 0.7379 | 0.5997 | 0.6293 | 13.97 | 19.29 |
+| hybrid | 0.7631 | 0.6434 | 0.6688 | 44.83 | 80.50 |
+| hybrid_rerank | 0.7442 | 0.6529 | 0.6669 | 2197.15 | 2354.57 |
+
+Hybrid had the highest Recall@5 and nDCG@5 in this fixed comparison. Reranking increased median retrieval latency to 2.2 seconds without improving nDCG over hybrid, so it remains an ablation rather than a recommended default. The lightweight no-download demo uses BM25; use hybrid to reproduce the strongest measured retrieval configuration.
+The run used pinned model revisions, k=5, candidate_k=20, one measured pass after warmup, and no LLM calls.
+Model loading/index construction is excluded from query latency. See JSON for confidence intervals and provenance.
+
+
+See [public benchmark](reports/scifact/retrieval.md), [full measured results](reports/scifact/retrieval.json),
+[answer failures](reports/demo/answers.json), and [resume bullets](docs/RESUME.md).
+Read the [evaluation protocol](docs/EVALUATION.md) before interpreting or quoting numbers.
+
+## Why these additions matter
+
+Public AI engineering roles emphasize evaluation frameworks, retrieval systems, and end-to-end
+implementation. The project demonstrates these through measurable comparisons, tests, failure
+inspection, and explicit tradeoffs. The [industry research](docs/INDUSTRY_RESEARCH.md) cites primary
+job postings and evaluation documentation; it is not a recruiter survey.
+
+See [repository cleanup](docs/CHANGELOG.md) for what was removed and why.
+
+## Project layout
 
 ```text
-Another one.
+app/                    Streamlit demo and report viewer
+src/ingestion/          Bounded in-memory loaders and stable chunk IDs
+src/retrieval/          TF-IDF, BM25, dense, RRF, and reranker
+src/generation/         Evidence excerpts and optional structured LLM generation
+src/evaluation/         Metrics, public benchmark, answer judge, regression comparison
+src/pipeline.py         Shared application orchestration and query traces
+tests/                 Unit, integration, quality-gate, and Streamlit interaction tests
+data/demo.json         Fictional sample handbook and 20 development cases
+reports/               Actual measured runs and environment snapshot
+docs/                  Protocol, industry research, cleanup, and resume evidence
 ```
 
-Then:
+## Container
 
-```text
-What about its limitations?
+```bash
+docker build -t ragforge .
+docker run --rm -p 8501:8501 ragforge
 ```
 
-RAGForge uses the previous conversation to help resolve contextual follow-up questions.
+The container includes the offline demo; neural dependencies are not installed in this image.
+The Docker recipe is supplied but is not claimed as tested unless noted in validation results.
 
----
+## Limits
 
-## 🔎 Retrieval Pipeline
+This is a portfolio workbench, not a production-ready hosted service. It has no authentication,
+persistent tenant storage, concurrency benchmark, or uptime SLO. Inputs are bounded (10 MiB/file,
+30 MiB total; text extraction capped), but untrusted document processing needs stronger resource
+isolation in production. Scanned PDFs require external OCR. Prompt instructions are not a complete
+defense against prompt injection. Excerpt mode can return related evidence that does not answer the
+question; inspect the documented failures.
 
-RAGForge uses a multi-stage retrieval architecture.
-
-### Dense Retrieval
-
-Dense retrieval represents documents and queries as vectors and retrieves semantically similar chunks.
-
-### BM25
-
-BM25 performs lexical retrieval based on term matching.
-
-### Reciprocal Rank Fusion
-
-RRF combines the rankings produced by dense retrieval and BM25.
-
-This creates a hybrid retrieval stage that can handle both semantic and keyword-oriented queries.
-
-### CrossEncoder Reranking
-
-The hybrid retrieval candidates are passed to a CrossEncoder that scores query-document relevance.
-
-The highest-ranked documents are passed to the generation stage.
-
----
-
-## 🧭 Query Routing
-
-RAGForge uses semantic routing to determine how a query should be handled.
-
-```text
-Query
- │
- ├── Greeting
- │      └── Direct response
- │
- ├── Casual
- │      └── LLM response
- │
- └── Document
-        └── Retrieval pipeline
-```
-
-This prevents every query from unnecessarily going through the complete retrieval pipeline.
-
----
-
-## 💬 Conversation Context
-
-RAGForge maintains conversation history within the Streamlit session.
-
-This allows the system to interpret follow-up queries such as:
-
-```text
-"Tell me about the architecture."
-
-"What are its advantages?"
-
-"Tell me another one."
-
-"What about the limitations?"
-```
-
-without requiring the user to repeat the full context every time.
-
----
-
-## 📚 Source Transparency
-
-For document-related questions, RAGForge displays the retrieved source chunks used to generate the answer.
-
-Each source can be expanded in the Streamlit interface to inspect its content.
-
-This makes the retrieval process more transparent and helps users understand where the generated answer came from.
-
----
-
-## 🔐 Security
-
-API keys are stored through environment variables and should never be committed to source control.
-
-The following files and directories are excluded from Git:
-
-```text
-.env
-.venv/
-data/uploads/
-data/qdrant/
-__pycache__/
-```
-
----
-
-## 🎯 Project Goal
-
-RAGForge was built to explore and implement a practical, modular Retrieval-Augmented Generation architecture.
-
-The project focuses on combining multiple retrieval techniques rather than relying on a single vector search approach.
-
-The architecture separates:
-
-```text
-Routing
-   ↓
-Retrieval
-   ↓
-Reranking
-   ↓
-Generation
-```
-
-This makes individual components easier to test, replace, and extend.
-
----
-
-## 🚧 Current Status
-
-RAGForge currently supports:
-
-- Document ingestion
-- Document chunking
-- Dense retrieval
-- BM25 retrieval
-- Hybrid retrieval
-- CrossEncoder reranking
-- Semantic query routing
-- Conversation-aware queries
-- LLM generation
-- Source display
-- Streamlit interface
-
-The project is actively being developed.
-
----
-
-## 📌 Future Improvements
-
-Potential future improvements include:
-
-- Persistent production vector storage
-- Improved retrieval evaluation
-- Query rewriting
-- Retrieval caching
-- Streaming generation
-- Better document metadata handling
-- Authentication
-- Observability and tracing
-- Production deployment
-- More advanced retrieval strategies
-
----
-
-## 👨‍💻 Author
-
-**Md Aban Zeya**
-
-GitHub:
-
-https://github.com/randomaban-beep
-
----
-
-## ⭐ Acknowledgements
-
-This project uses open-source libraries and models from the Python, LangChain, Hugging Face, Sentence Transformers, and Qdrant ecosystems.
+**Author:** [Md Aban Zeya](https://github.com/randomaban-beep)

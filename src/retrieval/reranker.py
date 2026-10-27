@@ -1,98 +1,27 @@
-from sentence_transformers import CrossEncoder
-import math
+from src.models import Hit
+
+RERANKER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+RERANKER_REVISION = "233902d25c440f23af6f7d6e94d2946bac0bee0a"
 
 
 class Reranker:
-
-    def __init__(
-        self,
-        model_name="cross-encoder/ms-marco-MiniLM-L-6-v2"
-    ):
-        print("Loading reranker...")
+    def __init__(self, model_name=RERANKER_MODEL):
+        from sentence_transformers import CrossEncoder
 
         self.model = CrossEncoder(
-            model_name
+            model_name,
+            device="cpu",
+            revision=RERANKER_REVISION if model_name == RERANKER_MODEL else None,
         )
+        self.model_revision = getattr(self.model.model.config, "_commit_hash", None)
 
-    def rerank(
-        self,
-        query,
-        documents,
-        top_k=3
-    ):
-
-        if not documents:
+    def rerank(self, query, hits, top_k=5):
+        if top_k < 1:
+            raise ValueError("top_k must be positive.")
+        if not hits:
             return []
-
-        # ---------------------------------------------
-        # Create query-document pairs
-        # ---------------------------------------------
-
-        pairs = [
-            (
-                query,
-                document.page_content
-            )
-            for document in documents
-        ]
-
-        # ---------------------------------------------
-        # Raw CrossEncoder scores
-        # ---------------------------------------------
-
-        raw_scores = self.model.predict(
-            pairs
-        )
-
-        # ---------------------------------------------
-        # Rank using RAW scores
-        #
-        # This preserves the original ranking.
-        # ---------------------------------------------
-
-        ranked = sorted(
-            zip(documents, raw_scores),
-            key=lambda x: x[1],
-            reverse=True
-        )
-
-        # ---------------------------------------------
-        # Convert raw logits to 0-1 score
-        #
-        # sigmoid(x) = 1 / (1 + e^-x)
-        #
-        # This is ONLY for display.
-        # ---------------------------------------------
-
-        results = []
-
-        for document, raw_score in ranked[:top_k]:
-
-            raw_score = float(raw_score)
-
-            try:
-
-                normalized_score = (
-                    1.0 /
-                    (
-                        1.0 +
-                        math.exp(-raw_score)
-                    )
-                )
-
-            except OverflowError:
-
-                normalized_score = (
-                    0.0
-                    if raw_score < 0
-                    else 1.0
-                )
-
-            results.append(
-                (
-                    document,
-                    normalized_score
-                )
-            )
-
-        return results
+        scores = self.model.predict([(query, hit.document.text) for hit in hits])
+        return sorted(
+            [Hit(hit.document, float(score)) for hit, score in zip(hits, scores)],
+            key=lambda hit: (-hit.score, hit.document.id),
+        )[:top_k]

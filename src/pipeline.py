@@ -1,651 +1,90 @@
-import sys
-from pathlib import Path
+from dataclasses import asdict, dataclass
+from time import perf_counter
+from uuid import uuid4
+from src.generation.generator import ExtractiveGenerator, OpenAIGenerator, PROMPT_VERSION
+from src.ingestion.chunker import chunk_documents
+from src.ingestion.loaders import load_documents
+from src.retrieval.hybrid import SearchIndex
+from src.retrieval.reranker import Reranker
 
 
-# =========================================================
-# PATH SETUP
-# =========================================================
+@dataclass(frozen=True)
+class Config:
+    retrieval: str = "bm25"
+    generation: str = "extractive"
+    top_k: int = 5
+    candidate_k: int = 20
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
-SRC_DIR = ROOT_DIR / "src"
+    def __post_init__(self):
+        if self.retrieval not in {"tfidf", "bm25", "dense", "hybrid", "hybrid_rerank"}:
+            raise ValueError("Unknown retrieval mode.")
+        if self.generation not in {"extractive", "openai"}:
+            raise ValueError("Unknown generation mode.")
+        if not 1 <= self.top_k <= self.candidate_k <= 100:
+            raise ValueError("Require 1 <= top_k <= candidate_k <= 100.")
 
-if str(SRC_DIR) not in sys.path:
-    sys.path.insert(0, str(SRC_DIR))
-
-
-# =========================================================
-# IMPORTS
-# =========================================================
-
-from retrieval.router import QueryRouter
-
-from retrieval.hybrid import (
-    load_documents,
-    create_chunks,
-    create_embeddings,
-    create_vector_store,
-    create_bm25,
-    hybrid_search,
-)
-
-from retrieval.reranker import Reranker
-from generation.generator import RAGGenerator
-
-
-# =========================================================
-# RAG PIPELINE
-# =========================================================
 
 class RAGPipeline:
-
-    def __init__(self):
-
-        print("Initializing RAGForge...")
-
-
-        # -------------------------------------------------
-        # 1. Router
-        # -------------------------------------------------
-
-        print("Loading semantic router...")
-
-        self.router = QueryRouter()
-
-
-        # -------------------------------------------------
-        # 2. Embeddings
-        # -------------------------------------------------
-
-        print("Loading embedding model...")
-
-        self.embeddings = create_embeddings()
-
-
-        # -------------------------------------------------
-        # 3. Empty knowledge base
-        # -------------------------------------------------
-
-        print(
-            "Starting with an empty knowledge base..."
+    def __init__(self, config=None):
+        self.config = config or Config()
+        self.index = None
+        self.reranker = None
+        self.generator = (
+            ExtractiveGenerator() if self.config.generation == "extractive" else OpenAIGenerator()
         )
 
-        self.chunks = []
+    def index_records(self, documents, chunk=True):
+        records = chunk_documents(documents) if chunk else list(documents)
+        records = list({d.id: d for d in records}.values())
+        neural = self.config.retrieval in {"dense", "hybrid", "hybrid_rerank"}
+        # Build before assignment: a failed upload leaves the previous index usable.
+        new_index = SearchIndex(records, neural=neural)
+        new_reranker = Reranker() if self.config.retrieval == "hybrid_rerank" else None
+        self.index, self.reranker = new_index, new_reranker
+        return len(records)
 
-        self.vector_store = None
+    def index_documents(self, file_paths):
+        return self.index_records(load_documents(file_paths))
 
-        self.bm25 = None
-
-
-        # -------------------------------------------------
-        # 4. Reranker
-        # -------------------------------------------------
-
-        print("Loading reranker...")
-
-        self.reranker = Reranker()
-
-
-        # -------------------------------------------------
-        # 5. Generator
-        # -------------------------------------------------
-
-        print("Loading generator...")
-
-        self.generator = RAGGenerator()
-
-
-        print(
-            "\nRAGForge initialized successfully."
+    def retrieve(self, query):
+        if self.index is None:
+            return []
+        cfg = self.config
+        mode = "hybrid" if self.reranker else cfg.retrieval
+        hits = self.index.search(
+            query, mode, cfg.candidate_k if self.reranker else cfg.top_k, cfg.candidate_k
         )
-
-
-    # =====================================================
-    # BUILD INDEXES
-    # =====================================================
-
-    def _build_indexes(
-        self,
-        documents
-    ):
-
-        if not documents:
-
-            raise ValueError(
-                "No documents were loaded."
-            )
-
-
-        # -------------------------------------------------
-        # Chunk documents
-        # -------------------------------------------------
-
-        print(
-            "Creating chunks..."
-        )
-
-        self.chunks = create_chunks(
-            documents
-        )
-
-        print(
-            f"Created {len(self.chunks)} chunks."
-        )
-
-
-        if not self.chunks:
-
-            raise ValueError(
-                "No chunks were created from "
-                "the documents."
-            )
-
-
-        # -------------------------------------------------
-        # Vector store
-        # -------------------------------------------------
-
-        print(
-            "Creating vector store..."
-        )
-
-        self.vector_store = create_vector_store(
-
-            self.chunks,
-
-            self.embeddings
-        )
-
-
-        # -------------------------------------------------
-        # BM25
-        # -------------------------------------------------
-
-        print(
-            "Creating BM25 index..."
-        )
-
-        self.bm25 = create_bm25(
-            self.chunks
-        )
-
-
-    # =====================================================
-    # INDEX UPLOADED DOCUMENTS
-    # =====================================================
-
-    def index_documents(
-        self,
-        file_paths
-    ):
-
-        if not file_paths:
-
-            raise ValueError(
-                "No documents were provided."
-            )
-
-
-        print(
-            "\nIndexing uploaded documents..."
-        )
-
-
-        # -------------------------------------------------
-        # Load documents
-        # -------------------------------------------------
-
-        documents = load_documents(
-            file_paths
-        )
-
-        print(
-            f"Loaded {len(documents)} "
-            f"document(s)."
-        )
-
-
-        if not documents:
-
-            raise ValueError(
-                "No content could be extracted "
-                "from the uploaded documents."
-            )
-
-
-        # -------------------------------------------------
-        # Build indexes
-        # -------------------------------------------------
-
-        self._build_indexes(
-            documents
-        )
-
-
-        print(
-            "Documents indexed successfully."
-        )
-
-
-        return len(
-            self.chunks
-        )
-
-
-    # =====================================================
-    # QUERY
-    # =====================================================
-
-    def query(
-        self,
-        user_query: str,
-        conversation_history=None
-    ):
-
-        # -------------------------------------------------
-        # IMPORTANT:
-        # Make sure history always exists.
-        # -------------------------------------------------
-
-        if conversation_history is None:
-
-            conversation_history = []
-
-
-        print(
-            f"\nUSER QUERY: {user_query}"
-        )
-
-
-        # =================================================
-        # STEP 1 — ROUTER
-        # =================================================
-
-        decision = self.router.route(
-
-            user_query,
-
-            conversation_history
-        )
-
-
-        route = decision.route.value
-
-
-        print(
-            f"ROUTE: {route}"
-        )
-
-        print(
-            f"REASON: {decision.reason}"
-        )
-
-
-        # =================================================
-        # GREETING
-        # =================================================
-
-        if route == "greeting":
-
-            return {
-
-                "answer": (
-                    "Hey! 👋 I'm RAGForge. "
-                    "Upload a document and ask me "
-                    "something about it."
-                ),
-
-                "sources": [],
-
-                "route": route,
-            }
-
-
-        # =================================================
-        # CASUAL
-        # =================================================
-
-        if route == "casual":
-
-            answer = (
-
-                self.generator.generate_casual(
-
-                    query=user_query,
-
-                    conversation_history=(
-                        conversation_history
-                    )
-                )
-            )
-
-
-            return {
-
-                "answer": answer,
-
-                "sources": [],
-
-                "route": route,
-            }
-
-
-        # =================================================
-        # DOCUMENT QUERY
-        # =================================================
-
-        # -------------------------------------------------
-        # Make sure documents exist
-        # -------------------------------------------------
-
-        if not self.chunks:
-
-            return {
-
-                "answer": (
-                    "I don't have any documents "
-                    "in the knowledge base yet. "
-                    "Please upload and index a document "
-                    "first."
-                ),
-
-                "sources": [],
-
-                "route": "document",
-            }
-
-
-        # -------------------------------------------------
-        # Hybrid retrieval
-        # -------------------------------------------------
-
-        print(
-            "\nRetrieving..."
-        )
-
-
-        candidates = hybrid_search(
-
-            query=user_query,
-
-            chunks=self.chunks,
-
-            vector_store=self.vector_store,
-
-            bm25=self.bm25,
-
-            k=4,
-        )
-
-
-        print(
-            f"Retrieved "
-            f"{len(candidates)} candidates."
-        )
-
-
-        # -------------------------------------------------
-        # Reranking
-        # -------------------------------------------------
-
-        reranked = self.reranker.rerank(
-
-            query=user_query,
-
-            documents=candidates,
-
-            top_k=3,
-        )
-
-
-        print(
-            f"Reranked to "
-            f"{len(reranked)} documents."
-        )
-
-
-        # -------------------------------------------------
-        # Extract documents
-        # -------------------------------------------------
-
-        documents = [
-
-            document
-
-            for document, score
-
-            in reranked
-        ]
-
-
-        # -------------------------------------------------
-        # Generate answer
-        # -------------------------------------------------
-
-        answer = self.generator.generate(
-
-            query=user_query,
-
-            documents=documents,
-
-            conversation_history=(
-                conversation_history
-            )
-        )
-
-
-        # =================================================
-        # SOURCES
-        # =================================================
-
-        sources = []
-
-
-        for i, (
-            document,
-            score,
-        ) in enumerate(
-
-            reranked,
-
-            start=1
-        ):
-
-            sources.append({
-
-                "id": i,
-
-                "content":
-                    document.page_content,
-
-                "score":
-                    float(score),
-
-                "metadata":
-                    document.metadata,
-            })
-
-
-        # =================================================
-        # RETURN
-        # =================================================
-
+        return self.reranker.rerank(query, hits, cfg.top_k) if self.reranker else hits
+
+    def query(self, user_query):
+        if not user_query.strip() or len(user_query) > 4000:
+            raise ValueError("Question must contain between 1 and 4,000 characters.")
+        start = perf_counter()
+        hits = self.retrieve(user_query)
+        retrieved = perf_counter()
+        generated = self.generator.generate(user_query, hits)
+        finished = perf_counter()
         return {
-
-            "answer": answer,
-
-            "sources": sources,
-
-            "route": route,
+            **asdict(generated),
+            "sources": [
+                {
+                    "id": h.document.id,
+                    "content": h.document.text,
+                    "score": h.score,
+                    "metadata": h.document.metadata,
+                }
+                for h in hits
+            ],
+            "trace": {
+                "request_id": str(uuid4()),
+                "config": asdict(self.config),
+                "prompt_version": PROMPT_VERSION,
+                "retrieval_ms": (retrieved - start) * 1000,
+                "generation_ms": (finished - retrieved) * 1000,
+                "total_ms": (finished - start) * 1000,
+                "retrieved_ids": [h.document.id for h in hits],
+                "model": getattr(self.generator, "model", None),
+            },
         }
 
-
-    # =====================================================
-    # ASK
-    #
-    # Streamlit can use either:
-    #
-    # rag.query(...)
-    # rag.ask(...)
-    #
-    # =====================================================
-
-    def ask(
-        self,
-        user_query: str,
-        conversation_history=None
-    ):
-
-        return self.query(
-
-            user_query=user_query,
-
-            conversation_history=(
-                conversation_history
-            )
-        )
-
-
-# =========================================================
-# CLI
-# =========================================================
-
-def main():
-
-    pipeline = RAGPipeline()
-
-
-    print(
-        "\n" + "=" * 60
-    )
-
-
-    print(
-        "RAGForge ready 🚀"
-    )
-
-
-    print(
-        "Type 'exit' to quit."
-    )
-
-
-    print(
-        "=" * 60
-    )
-
-
-    # -----------------------------------------------------
-    # CLI conversation history
-    # -----------------------------------------------------
-
-    conversation_history = []
-
-
-    while True:
-
-        query = input(
-            "\nYou: "
-        ).strip()
-
-
-        if query.lower() == "exit":
-
-            print(
-                "\nGoodbye! 👋"
-            )
-
-            break
-
-
-        if not query:
-
-            continue
-
-
-        try:
-
-            result = pipeline.query(
-
-                query,
-
-                conversation_history
-            )
-
-
-            print(
-                "\nRAGForge:"
-            )
-
-
-            print(
-                result["answer"]
-            )
-
-
-            # -------------------------------------------------
-            # Save conversation
-            # -------------------------------------------------
-
-            conversation_history.append({
-
-                "role": "user",
-
-                "content": query,
-            })
-
-
-            conversation_history.append({
-
-                "role": "assistant",
-
-                "content": result["answer"],
-            })
-
-
-            # -------------------------------------------------
-            # Sources
-            # -------------------------------------------------
-
-            if result["sources"]:
-
-                print(
-                    "\nSources:"
-                )
-
-
-                for source in (
-                    result["sources"]
-                ):
-
-                    print(
-
-                        f"\n[{source['id']}] "
-                        f"Score: "
-                        f"{source['score']:.4f}"
-                    )
-
-
-                    print(
-                        source["content"][:500]
-                    )
-
-
-            print(
-                "\n" + "-" * 60
-            )
-
-
-        except Exception as error:
-
-            print(
-                f"\nERROR: {error}"
-            )
-
-
-# =========================================================
-# ENTRY POINT
-# =========================================================
-
-if __name__ == "__main__":
-
-    main()
+    ask = query
