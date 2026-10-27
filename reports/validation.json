@@ -1,11 +1,12 @@
 {
   "test_command": "python -m pytest -q",
-  "tests_passed": 31,
+  "tests_passed": 32,
   "lint": "ruff check .: passed",
   "offline_quality_gate": "Both TF-IDF and BM25 met Recall@5 >= 0.8; report comparison passed.",
   "ui": "Streamlit AppTest: sample load, cited answer, and session clear passed.",
   "provider_integration": "Mocked structured-output tests passed. Live generation and judge not run: no API key configured.",
   "docker": "Recipe supplied; build not run because Docker was unavailable.",
   "preview": "Streamlit process started, but cross-process localhost health request timed out in the execution sandbox. Use run-demo.cmd or the README command locally.",
-  "warning": "Streamlit chart dependency emitted a pandas deprecation warning; no test failures."
+  "warning": "Streamlit chart dependency emitted a pandas deprecation warning; no test failures.",
+  "portability": "Fixture fingerprints use canonical JSON; CRLF/formatting differences are ignored while question changes are detected."
 }

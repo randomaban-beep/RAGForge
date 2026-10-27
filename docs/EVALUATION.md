@@ -100,3 +100,7 @@ its candidate set. The excerpt generator can copy irrelevant or adversarial text
 abstention on a related but unanswered question. The LLM prompt is a mitigation, not a security boundary.
 For a deployed system, add independent injection testing, access controls, rate limits, resource isolation,
 persistent storage, and representative load tests.
+
+Fixture fingerprints hash canonical JSON so Windows/Linux line endings and JSON formatting do not create false regressions. Public BEIR files retain raw-byte hashes.
+
+The public SciFact run's source fingerprint matches GitHub commit c515607ba5ef4656697102129cddc2caabc51e7c. Its report retains the equivalent local benchmark commit ID. The subsequent portability fix changes only the demo fixture fingerprint and its regression test, not retrieval or public-benchmark scores.

@@ -66,4 +66,6 @@ def load_fixture(path="data/demo.json"):
     path = Path(path)
     data = json.loads(path.read_text(encoding="utf-8"))
     docs = [Document(**row) for row in data["documents"]]
-    return docs, data["cases"], {path.name: sha256(path)}
+    canonical = json.dumps(data, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    fingerprint = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    return docs, data["cases"], {path.name: fingerprint}

@@ -3,7 +3,7 @@
 ## Suggested resume bullets
 
 - Built a hybrid RAG workbench using BM25, MiniLM embeddings, and reciprocal rank fusion; achieved **76.31% Recall@5** and **0.669 nDCG@5** on **300 BEIR/SciFact test queries across 5,183 documents**.
-- Implemented an evaluation pipeline comparing **5 retrieval configurations**, with per-query rankings, 95% bootstrap intervals, latency percentiles, **31 automated tests**, and CI gates for retrieval regressions.
+- Implemented an evaluation pipeline comparing **5 retrieval configurations**, with per-query rankings, 95% bootstrap intervals, latency percentiles, **32 automated tests**, and CI gates for retrieval regressions.
 
 ## Measured comparison you can discuss
 

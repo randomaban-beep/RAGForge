@@ -2,13 +2,13 @@
   "schema_version": 1,
   "dataset": "hand-authored synthetic demo; not held-out",
   "dataset_hashes": {
-    "demo.json": "52adb3f88a6991c834a661cebaebcbabeb6636032d21982262aa980ba97ea409"
+    "demo.json": "17f29144db90548cd5b8f3b5908d9216a3de9875be297cb6a85d9775216bc8d9"
   },
   "provenance": {
-    "utc": "2026-10-27T14:50:00.004871+00:00",
-    "git_commit": "d3c61aebb0b8567742e84197d1270bd049eb483e",
+    "utc": "2026-10-27T19:28:02.984719+00:00",
+    "git_commit": "c515607ba5ef4656697102129cddc2caabc51e7c",
     "working_tree_dirty": true,
-    "source_sha256": "0ea1a1bf3b503861f6ae42f6836e9ba2d11db1c442ca747a7684b28ab5f1334d",
+    "source_sha256": "11311ec75fb940949e6b701b4b53ae7bddbef0b64dcfb57f4e0264c11179d943",
     "python": "3.12.14",
     "os": "Windows",
     "cpu": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
@@ -32,8 +32,8 @@
     "abstention_correct_n": 20,
     "unanswerable_abstention_rate": 0.5,
     "answerable_response_rate": 1.0,
-    "total_latency_p50_ms": 0.2381000085733831,
-    "total_latency_p95_ms": 0.5119550143717789
+    "total_latency_p50_ms": 0.22879999596625566,
+    "total_latency_p95_ms": 0.44966000423301017
   },
   "cases": [
     {
@@ -72,7 +72,7 @@
           }
         ],
         "trace": {
-          "request_id": "b095cda6-1bd2-43ee-a4cc-ad6ae4935e73",
+          "request_id": "b8bf8ec8-3318-4a1c-9dd2-4cec072855fc",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -80,9 +80,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.17099999240599573,
-          "generation_ms": 0.2069000038318336,
-          "total_ms": 0.3778999962378293,
+          "retrieval_ms": 0.20400001085363328,
+          "generation_ms": 0.23999999393709004,
+          "total_ms": 0.4440000047907233,
           "retrieved_ids": [
             "retention",
             "refund"
@@ -156,7 +156,7 @@
           }
         ],
         "trace": {
-          "request_id": "29eefad6-6971-4b43-9dc1-ebb05e396755",
+          "request_id": "2dcd7cdf-a198-450c-8ac2-4ebd3fbad71a",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -164,9 +164,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.1441999920643866,
-          "generation_ms": 0.09380001574754715,
-          "total_ms": 0.23800000781193376,
+          "retrieval_ms": 0.2161000156775117,
+          "generation_ms": 0.09269997826777399,
+          "total_ms": 0.3087999939452857,
           "retrieved_ids": [
             "deletion",
             "upload",
@@ -211,7 +211,7 @@
           }
         ],
         "trace": {
-          "request_id": "5702d3d7-1e8f-4124-9446-b985541418d3",
+          "request_id": "9c1504bf-6dd9-4fc9-853a-499e0f740d2e",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -219,9 +219,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.11560000712051988,
-          "generation_ms": 0.022199994418770075,
-          "total_ms": 0.13780000153928995,
+          "retrieval_ms": 0.10429997928440571,
+          "generation_ms": 0.018000020645558834,
+          "total_ms": 0.12229999992996454,
           "retrieved_ids": [
             "backup"
           ],
@@ -270,7 +270,7 @@
           }
         ],
         "trace": {
-          "request_id": "e7596755-b511-49be-a34f-6f0b3e881e2c",
+          "request_id": "ee9ee8f2-4676-4bc2-a114-337b877caabb",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -278,9 +278,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.11240001185797155,
-          "generation_ms": 0.03779999678954482,
-          "total_ms": 0.15020000864751637,
+          "retrieval_ms": 0.15949999215081334,
+          "generation_ms": 0.04270000499673188,
+          "total_ms": 0.20219999714754522,
           "retrieved_ids": [
             "backup",
             "access"
@@ -338,7 +338,7 @@
           }
         ],
         "trace": {
-          "request_id": "b8c84c0f-3b9d-41df-b564-deafcd0e505c",
+          "request_id": "935801ab-2d9a-40d2-aeb4-7c09481c18b1",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -346,9 +346,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.5495999939739704,
-          "generation_ms": 0.06790002225898206,
-          "total_ms": 0.6175000162329525,
+          "retrieval_ms": 0.12020001304335892,
+          "generation_ms": 0.05099998088553548,
+          "total_ms": 0.1711999939288944,
           "retrieved_ids": [
             "access",
             "retention",
@@ -407,7 +407,7 @@
           }
         ],
         "trace": {
-          "request_id": "8c747349-3b22-4876-b85b-9a1718d26d0e",
+          "request_id": "1883bcbc-a170-41ba-962c-89effa0cf213",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -415,9 +415,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.12210002751089633,
-          "generation_ms": 0.0754999928176403,
-          "total_ms": 0.19760002032853663,
+          "retrieval_ms": 0.11140000424347818,
+          "generation_ms": 0.05080000846646726,
+          "total_ms": 0.16220001270994544,
           "retrieved_ids": [
             "access",
             "retention",
@@ -476,7 +476,7 @@
           }
         ],
         "trace": {
-          "request_id": "1cb000b0-9e50-4f06-9c39-88d1b6026353",
+          "request_id": "632144c7-a301-4132-9742-88648a19b4b5",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -484,9 +484,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.3727999865077436,
-          "generation_ms": 0.0748000165913254,
-          "total_ms": 0.447600003099069,
+          "retrieval_ms": 0.15350000467151403,
+          "generation_ms": 0.060999998822808266,
+          "total_ms": 0.2145000034943223,
           "retrieved_ids": [
             "incident",
             "keys",
@@ -529,7 +529,7 @@
           }
         ],
         "trace": {
-          "request_id": "b8ce62e6-3ebe-4796-b724-354bf6f2283a",
+          "request_id": "7798f1d3-35fb-452e-87b3-88d47b1f7ff3",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -537,9 +537,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.09980000322684646,
-          "generation_ms": 0.028300011763349175,
-          "total_ms": 0.12810001499019563,
+          "retrieval_ms": 0.07949999417178333,
+          "generation_ms": 0.02370000584051013,
+          "total_ms": 0.10320000001229346,
           "retrieved_ids": [
             "incident"
           ],
@@ -612,7 +612,7 @@
           }
         ],
         "trace": {
-          "request_id": "7751ef68-7e1a-46e4-8b26-de3b5893ba37",
+          "request_id": "7092f3b3-4988-40ec-aaaf-1a3ea8088fac",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -620,9 +620,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.23299999884329736,
-          "generation_ms": 0.1024999946821481,
-          "total_ms": 0.33549999352544546,
+          "retrieval_ms": 0.16160000814124942,
+          "generation_ms": 0.08149998029693961,
+          "total_ms": 0.24309998843818903,
           "retrieved_ids": [
             "refund",
             "upload",
@@ -683,7 +683,7 @@
           }
         ],
         "trace": {
-          "request_id": "75c5a28a-0062-40ed-9450-4e16b1b03845",
+          "request_id": "14c3cfce-5995-40e4-823f-2d722de9961c",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -691,9 +691,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.14369998825713992,
-          "generation_ms": 0.06120000034570694,
-          "total_ms": 0.20489998860284686,
+          "retrieval_ms": 0.1126999850384891,
+          "generation_ms": 0.051000009989365935,
+          "total_ms": 0.16369999502785504,
           "retrieved_ids": [
             "retention",
             "upload",
@@ -744,7 +744,7 @@
           }
         ],
         "trace": {
-          "request_id": "fe255456-08cc-4535-b3df-6d220eef9076",
+          "request_id": "934ce719-fef1-4dcf-bba3-9e4c1bfecdd7",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -752,9 +752,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.14749998808838427,
-          "generation_ms": 0.09070002124644816,
-          "total_ms": 0.23820000933483243,
+          "retrieval_ms": 0.1204000145662576,
+          "generation_ms": 0.03940000897273421,
+          "total_ms": 0.1598000235389918,
           "retrieved_ids": [
             "encryption",
             "deletion"
@@ -804,7 +804,7 @@
           }
         ],
         "trace": {
-          "request_id": "fff66668-0465-455a-9695-e1f23951b11c",
+          "request_id": "835c3506-5129-40f9-b3b6-254054496b16",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -812,9 +812,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.17559999832883477,
-          "generation_ms": 0.04980000085197389,
-          "total_ms": 0.22539999918080866,
+          "retrieval_ms": 0.1517999917268753,
+          "generation_ms": 0.044100015657022595,
+          "total_ms": 0.1959000073838979,
           "retrieved_ids": [
             "deployment",
             "refund"
@@ -888,7 +888,7 @@
           }
         ],
         "trace": {
-          "request_id": "cb7ef130-0aca-41c2-b336-497000a97085",
+          "request_id": "df746931-91f7-4229-bcee-a2e38dd7c09c",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -896,9 +896,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.2285000227857381,
-          "generation_ms": 0.09819999104365706,
-          "total_ms": 0.3267000138293952,
+          "retrieval_ms": 0.1784999913070351,
+          "generation_ms": 0.07690000347793102,
+          "total_ms": 0.2553999947849661,
           "retrieved_ids": [
             "rate",
             "upload",
@@ -943,7 +943,7 @@
           }
         ],
         "trace": {
-          "request_id": "075d03e5-1e6a-4cda-8c5a-d6455cb953ef",
+          "request_id": "c4cbe7a4-d936-42e6-87f5-0b401ca85aee",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -951,9 +951,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.16239998512901366,
-          "generation_ms": 0.03260001540184021,
-          "total_ms": 0.19500000053085387,
+          "retrieval_ms": 0.13600001693703234,
+          "generation_ms": 0.029099988751113415,
+          "total_ms": 0.16510000568814576,
           "retrieved_ids": [
             "rate"
           ],
@@ -1026,7 +1026,7 @@
           }
         ],
         "trace": {
-          "request_id": "470922a6-9900-4316-b1de-d27671a9f9a7",
+          "request_id": "6282df8f-ace6-483c-b342-5037462ab405",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -1034,9 +1034,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.1790999958757311,
-          "generation_ms": 0.09109999518841505,
-          "total_ms": 0.27019999106414616,
+          "retrieval_ms": 0.155999994603917,
+          "generation_ms": 0.149500003317371,
+          "total_ms": 0.305499997921288,
           "retrieved_ids": [
             "deletion",
             "retention",
@@ -1097,7 +1097,7 @@
           }
         ],
         "trace": {
-          "request_id": "3e70b1bf-5561-4065-8bda-670aa2cc76d2",
+          "request_id": "122b879b-bb76-4fd9-bc60-139f678203b6",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -1105,9 +1105,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.14030002057552338,
-          "generation_ms": 0.059999991208314896,
-          "total_ms": 0.20030001178383827,
+          "retrieval_ms": 0.20640000002458692,
+          "generation_ms": 0.10869998368434608,
+          "total_ms": 0.315099983708933,
           "retrieved_ids": [
             "keys",
             "incident",
@@ -1172,7 +1172,7 @@
           }
         ],
         "trace": {
-          "request_id": "13189b81-76f7-4931-8e77-bb57272898d6",
+          "request_id": "d73243df-7ff0-4285-8629-64840b1b10d7",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -1180,9 +1180,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.15899998834356666,
-          "generation_ms": 0.08319999324157834,
-          "total_ms": 0.242199981585145,
+          "retrieval_ms": 0.4324000037740916,
+          "generation_ms": 0.12479998986236751,
+          "total_ms": 0.5571999936364591,
           "retrieved_ids": [
             "incident",
             "upload",
@@ -1256,7 +1256,7 @@
           }
         ],
         "trace": {
-          "request_id": "b7262f0c-360a-45ca-943d-07055d9daea5",
+          "request_id": "ff3c95bb-de29-4e71-943c-3b5808f22eec",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -1264,9 +1264,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.3175000019837171,
-          "generation_ms": 0.09970000246539712,
-          "total_ms": 0.4172000044491142,
+          "retrieval_ms": 0.24699998903088272,
+          "generation_ms": 0.09670000872574747,
+          "total_ms": 0.3436999977566302,
           "retrieved_ids": [
             "upload",
             "incident",
@@ -1343,7 +1343,7 @@
           }
         ],
         "trace": {
-          "request_id": "bc9e9579-9b5a-4c92-b504-cd1e6da5e565",
+          "request_id": "1a8fa6c7-9118-4eba-8c56-f7daae9dec33",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -1351,9 +1351,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.4104000108782202,
-          "generation_ms": 0.09600000339560211,
-          "total_ms": 0.5064000142738223,
+          "retrieval_ms": 0.18679999629966915,
+          "generation_ms": 0.10299999848939478,
+          "total_ms": 0.28979999478906393,
           "retrieved_ids": [
             "support",
             "deletion",
@@ -1430,7 +1430,7 @@
           }
         ],
         "trace": {
-          "request_id": "d29cef45-3da7-4fb6-b052-1e90de5af340",
+          "request_id": "66292f06-b3e1-4ece-b8ee-9f32a4c6f99b",
           "config": {
             "retrieval": "bm25",
             "generation": "extractive",
@@ -1438,9 +1438,9 @@
             "candidate_k": 20
           },
           "prompt_version": "grounded-answer-v1",
-          "retrieval_ms": 0.12499999138526618,
-          "generation_ms": 0.056500022765249014,
-          "total_ms": 0.1815000141505152,
+          "retrieval_ms": 0.18240002100355923,
+          "generation_ms": 0.09339998359791934,
+          "total_ms": 0.2758000046014786,
           "retrieved_ids": [
             "keys",
             "rate",
