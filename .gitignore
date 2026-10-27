@@ -1,25 +1,19 @@
-# Virtual environment
 .venv/
 venv/
-
-# Environment / secrets
 .env
 .env.*
+!.env.example
 .streamlit/secrets.toml
-
-# Python
 __pycache__/
 *.py[cod]
-
-# IDE
+.pytest_cache/
+.ruff_cache/
+.tmp/
+.cache/
 .vscode/
 .idea/
-
-# Local vector database
 data/qdrant/
-
-# Uploaded user documents
 data/uploads/
-
-# Evaluation / temporary files
+data/benchmarks/
 *.log
+reports/ci/

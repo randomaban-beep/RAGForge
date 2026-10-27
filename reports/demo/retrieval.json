@@ -1,0 +1,721 @@
+{
+  "schema_version": 1,
+  "dataset": "demo",
+  "dataset_hashes": {
+    "demo.json": "17f29144db90548cd5b8f3b5908d9216a3de9875be297cb6a85d9775216bc8d9"
+  },
+  "document_count": 12,
+  "query_count": 16,
+  "config": {
+    "k": 5,
+    "candidate_k": 20,
+    "rrf_constant": 60,
+    "repeats": 1,
+    "warmups_per_mode": 1,
+    "chunking": "none; title + complete document",
+    "embedding_model": null,
+    "embedding_revision": null,
+    "reranker_revision": null,
+    "reranker_model": null,
+    "device": "cpu",
+    "bm25_idf": "log(1 + (N - df + 0.5) / (df + 0.5))",
+    "omp_num_threads": null,
+    "mkl_num_threads": null,
+    "build_seconds_including_model_load": 0.043881300021894276
+  },
+  "provenance": {
+    "utc": "2026-10-27T19:27:55.239909+00:00",
+    "git_commit": "c515607ba5ef4656697102129cddc2caabc51e7c",
+    "working_tree_dirty": true,
+    "source_sha256": "11311ec75fb940949e6b701b4b53ae7bddbef0b64dcfb57f4e0264c11179d943",
+    "python": "3.12.14",
+    "os": "Windows",
+    "cpu": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+    "logical_cpus": 8,
+    "packages": {
+      "numpy": "2.5.4",
+      "scikit-learn": "1.9.1",
+      "rank-bm25": "0.2.2",
+      "sentence-transformers": "6.2.0",
+      "torch": "2.14.1"
+    }
+  },
+  "results": {
+    "tfidf": {
+      "summary": {
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "mrr@5": 0.921875,
+        "ndcg@5": 0.9413503944778032,
+        "ndcg_ci95": [
+          0.8471180738351933,
+          1.0
+        ],
+        "latency_p50_ms": 1.1417000059736893,
+        "latency_p95_ms": 2.376575008383952
+      },
+      "queries": [
+        {
+          "query_id": "demo-1",
+          "retrieved_ids": [
+            "retention",
+            "refund"
+          ],
+          "relevance": {
+            "retention": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.9342999837826937
+          ]
+        },
+        {
+          "query_id": "demo-2",
+          "retrieved_ids": [
+            "deletion",
+            "upload",
+            "incident",
+            "retention",
+            "rate"
+          ],
+          "relevance": {
+            "retention": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 0.25,
+            "ndcg@5": 0.43067655807339306
+          },
+          "latency_ms": [
+            0.89490000391379
+          ]
+        },
+        {
+          "query_id": "demo-3",
+          "retrieved_ids": [
+            "backup"
+          ],
+          "relevance": {
+            "backup": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            1.6056000022217631
+          ]
+        },
+        {
+          "query_id": "demo-4",
+          "retrieved_ids": [
+            "backup",
+            "access"
+          ],
+          "relevance": {
+            "backup": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            1.5525000053457916
+          ]
+        },
+        {
+          "query_id": "demo-5",
+          "retrieved_ids": [
+            "access",
+            "retention",
+            "upload"
+          ],
+          "relevance": {
+            "access": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            2.122300007613376
+          ]
+        },
+        {
+          "query_id": "demo-6",
+          "retrieved_ids": [
+            "access",
+            "retention",
+            "refund"
+          ],
+          "relevance": {
+            "access": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            1.1599000135902315
+          ]
+        },
+        {
+          "query_id": "demo-7",
+          "retrieved_ids": [
+            "incident",
+            "keys",
+            "support"
+          ],
+          "relevance": {
+            "incident": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            1.0254000080749393
+          ]
+        },
+        {
+          "query_id": "demo-8",
+          "retrieved_ids": [
+            "incident"
+          ],
+          "relevance": {
+            "incident": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.9351999906357378
+          ]
+        },
+        {
+          "query_id": "demo-9",
+          "retrieved_ids": [
+            "refund",
+            "retention",
+            "upload",
+            "incident",
+            "rate"
+          ],
+          "relevance": {
+            "refund": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            1.2236000038683414
+          ]
+        },
+        {
+          "query_id": "demo-10",
+          "retrieved_ids": [
+            "retention",
+            "upload",
+            "refund"
+          ],
+          "relevance": {
+            "upload": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 0.5,
+            "ndcg@5": 0.6309297535714575
+          },
+          "latency_ms": [
+            1.1141999857500196
+          ]
+        },
+        {
+          "query_id": "demo-11",
+          "retrieved_ids": [
+            "encryption",
+            "deletion"
+          ],
+          "relevance": {
+            "encryption": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.902900006622076
+          ]
+        },
+        {
+          "query_id": "demo-12",
+          "retrieved_ids": [
+            "deployment",
+            "refund"
+          ],
+          "relevance": {
+            "deployment": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            1.4744999934919178
+          ]
+        },
+        {
+          "query_id": "demo-13",
+          "retrieved_ids": [
+            "rate",
+            "upload",
+            "retention",
+            "deletion",
+            "refund"
+          ],
+          "relevance": {
+            "rate": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            3.139400010695681
+          ]
+        },
+        {
+          "query_id": "demo-14",
+          "retrieved_ids": [
+            "rate"
+          ],
+          "relevance": {
+            "rate": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            1.3490999990608543
+          ]
+        },
+        {
+          "query_id": "demo-15",
+          "retrieved_ids": [
+            "deletion",
+            "retention",
+            "encryption",
+            "refund",
+            "rate"
+          ],
+          "relevance": {
+            "deletion": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            1.123499998357147
+          ]
+        },
+        {
+          "query_id": "demo-16",
+          "retrieved_ids": [
+            "keys",
+            "incident",
+            "rate"
+          ],
+          "relevance": {
+            "keys": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.8925000147428364
+          ]
+        }
+      ]
+    },
+    "bm25": {
+      "summary": {
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "mrr@5": 0.9270833333333333,
+        "ndcg@5": 0.9456831095982161,
+        "ndcg_ci95": [
+          0.8601162191964322,
+          1.0
+        ],
+        "latency_p50_ms": 0.16840000171214342,
+        "latency_p95_ms": 0.3177250109729357
+      },
+      "queries": [
+        {
+          "query_id": "demo-1",
+          "retrieved_ids": [
+            "retention",
+            "refund"
+          ],
+          "relevance": {
+            "retention": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.18409997574053705
+          ]
+        },
+        {
+          "query_id": "demo-2",
+          "retrieved_ids": [
+            "deletion",
+            "upload",
+            "retention",
+            "incident",
+            "rate"
+          ],
+          "relevance": {
+            "retention": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 0.3333333333333333,
+            "ndcg@5": 0.5
+          },
+          "latency_ms": [
+            0.3265000123064965
+          ]
+        },
+        {
+          "query_id": "demo-3",
+          "retrieved_ids": [
+            "backup"
+          ],
+          "relevance": {
+            "backup": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.17109999316744506
+          ]
+        },
+        {
+          "query_id": "demo-4",
+          "retrieved_ids": [
+            "backup",
+            "access"
+          ],
+          "relevance": {
+            "backup": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.13960001524537802
+          ]
+        },
+        {
+          "query_id": "demo-5",
+          "retrieved_ids": [
+            "access",
+            "retention",
+            "upload"
+          ],
+          "relevance": {
+            "access": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.132500019390136
+          ]
+        },
+        {
+          "query_id": "demo-6",
+          "retrieved_ids": [
+            "access",
+            "retention",
+            "refund"
+          ],
+          "relevance": {
+            "access": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.20450001466087997
+          ]
+        },
+        {
+          "query_id": "demo-7",
+          "retrieved_ids": [
+            "incident",
+            "keys",
+            "support"
+          ],
+          "relevance": {
+            "incident": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.31480001052841544
+          ]
+        },
+        {
+          "query_id": "demo-8",
+          "retrieved_ids": [
+            "incident"
+          ],
+          "relevance": {
+            "incident": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.10219999239780009
+          ]
+        },
+        {
+          "query_id": "demo-9",
+          "retrieved_ids": [
+            "refund",
+            "upload",
+            "retention",
+            "incident",
+            "rate"
+          ],
+          "relevance": {
+            "refund": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.1866999955382198
+          ]
+        },
+        {
+          "query_id": "demo-10",
+          "retrieved_ids": [
+            "retention",
+            "upload",
+            "refund"
+          ],
+          "relevance": {
+            "upload": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 0.5,
+            "ndcg@5": 0.6309297535714575
+          },
+          "latency_ms": [
+            0.14019999071024358
+          ]
+        },
+        {
+          "query_id": "demo-11",
+          "retrieved_ids": [
+            "encryption",
+            "deletion"
+          ],
+          "relevance": {
+            "encryption": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.1142999972216785
+          ]
+        },
+        {
+          "query_id": "demo-12",
+          "retrieved_ids": [
+            "deployment",
+            "refund"
+          ],
+          "relevance": {
+            "deployment": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.11970000923611224
+          ]
+        },
+        {
+          "query_id": "demo-13",
+          "retrieved_ids": [
+            "rate",
+            "upload",
+            "retention",
+            "deletion",
+            "keys"
+          ],
+          "relevance": {
+            "rate": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.18229999113827944
+          ]
+        },
+        {
+          "query_id": "demo-14",
+          "retrieved_ids": [
+            "rate"
+          ],
+          "relevance": {
+            "rate": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.16570001025684178
+          ]
+        },
+        {
+          "query_id": "demo-15",
+          "retrieved_ids": [
+            "deletion",
+            "retention",
+            "encryption",
+            "refund",
+            "rate"
+          ],
+          "relevance": {
+            "deletion": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.17460001981817186
+          ]
+        },
+        {
+          "query_id": "demo-16",
+          "retrieved_ids": [
+            "keys",
+            "incident",
+            "rate"
+          ],
+          "relevance": {
+            "keys": 1
+          },
+          "metrics": {
+            "recall@5": 1.0,
+            "precision@5": 0.2,
+            "mrr@5": 1.0,
+            "ndcg@5": 1.0
+          },
+          "latency_ms": [
+            0.13860000763088465
+          ]
+        }
+      ],
+      "vs_baseline": {
+        "baseline": "tfidf",
+        "ndcg_delta": 0.004332715120412934,
+        "paired_bootstrap_ci95": [
+          0.0,
+          0.012998145361238802
+        ]
+      }
+    }
+  }
+}
